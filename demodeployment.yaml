@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pluralsightpricingapi
+spec:
+  selector:
+    matchLabels:
+      app: pluralsightpricingapi
+  template:
+    metadata:
+      labels:
+        app: pluralsightpricingapi
+    spec:
+      containers:
+      - name: pluralsightpricingapi
+        image: pluralsightmicroservicesregistry.azurecr.io/pluralsightpricingapi
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pluralsightpricingapi
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: pluralsightpricingapi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pluralsightmoviestoreclient
+spec:
+  selector:
+    matchLabels:
+      app: pluralsightmoviestoreclient
+  template:
+    metadata:
+      labels:
+        app: pluralsightmoviestoreclient
+    spec:
+      containers:
+      - name: pluralsightmoviestoreclient
+        image: pluralsightmicroservicesregistry.azurecr.io/pluralsightmoviestoreclient
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pluralsightmoviestoreclient
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: pluralsightmoviestoreclient
